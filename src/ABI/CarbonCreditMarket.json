@@ -8,6 +8,25 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "burner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Burn",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "uint256",
         "name": "projectId",
@@ -122,6 +141,11 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "_seller",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
         "name": "_buyer",
         "type": "address"
       },
@@ -193,7 +217,7 @@
     ],
     "name": "addProject",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -216,6 +240,40 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_projectId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_projectName",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_carbonReduction",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_retirementTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "claimCredits",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "contractAddress",
     "outputs": [
@@ -230,6 +288,83 @@
   },
   {
     "inputs": [],
+    "name": "creditIdCounter",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "creditOwner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "credits",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "CreditId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "projectName",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "projectOwner",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "carbonReduction",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "retirementTime",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_projectId",
+        "type": "uint256"
+      }
+    ],
     "name": "getProjectData",
     "outputs": [
       {
@@ -296,7 +431,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "retirementTimestamp",
+        "name": "retirementTime",
         "type": "uint256"
       }
     ],
@@ -305,6 +440,11 @@
   },
   {
     "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_creditId",
+        "type": "uint256"
+      },
       {
         "internalType": "uint256",
         "name": "_projectId",
@@ -328,13 +468,24 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_creditId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_value",
+        "type": "uint256"
+      }
+    ],
     "name": "retireCredit",
     "outputs": [
       {
-        "internalType": "string",
+        "internalType": "bool",
         "name": "",
-        "type": "string"
+        "type": "bool"
       }
     ],
     "stateMutability": "payable",
@@ -343,6 +494,19 @@
   {
     "inputs": [],
     "name": "sustainaTokenAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "sustainaTokenOwner",
     "outputs": [
       {
         "internalType": "address",

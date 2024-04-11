@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import "./Login.css";
+
 import Singup from "./Singup";
 const { ethers } = require("ethers");
 
