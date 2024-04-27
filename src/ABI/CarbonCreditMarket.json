@@ -224,6 +224,40 @@
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "allProjects",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "projectName",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "totalCredits",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "retirementTime",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "_amount",
         "type": "uint256"
       }
@@ -358,30 +392,92 @@
     "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "fetchAllProjects",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "projectName",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalCredits",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "retirementTime",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct CarbonCreditMarket.Project[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAllProjects",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "projectName",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalCredits",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "retirementTime",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct CarbonCreditMarket.Project[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getCounter",
+    "outputs": [
       {
         "internalType": "uint256",
-        "name": "_projectId",
+        "name": "",
         "type": "uint256"
       }
     ],
-    "name": "getProjectData",
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "projectCount",
     "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
       {
         "internalType": "uint256",
         "name": "",

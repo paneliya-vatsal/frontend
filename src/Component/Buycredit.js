@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import "./Addproject.css";
+import React, { useState, useEffect } from "react";
 import { getContract, getProvider, getSigner } from "./Connect";
 import carbonCreditMarket from "A:/Project/Contract/frontend/src/ABI/CarbonCreditMarket.json";
 
-function Addproject() {
+function Buycredit() {
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
   const [signer, setSigner] = useState(null);
@@ -59,13 +58,13 @@ function Addproject() {
     }
   }, [provider, signer]);
 
-  const [owner, setowner] = useState();
-  const [ProjectName, setProjectName] = useState();
-  const [TotalCredit, setTotalCredit] = useState();
-  const [RetirementTimestamp, setTetirementTimeStamp] = useState();
+  const [_projectId, setProjectId] = useState();
+  const [_projectName, setProjectName] = useState();
+  const [_carbonReduction, setCarbonReduction] = useState();
+  const [_retirementTime, setRetirementTime] = useState();
 
   const handleChangeOwner = (event) => {
-    setowner(event.target.value);
+    setProjectId(event.target.value);
   };
 
   const handleChangeProject = (event) => {
@@ -73,11 +72,11 @@ function Addproject() {
   };
 
   const handleChangeTotalCredit = (event) => {
-    setTotalCredit(event.target.value);
+    setCarbonReduction(event.target.value);
   };
 
   const handleChangeTotalReTimeStamp = (event) => {
-    setTetirementTimeStamp(event.target.value);
+    setRetirementTime(event.target.value);
   };
 
   const handleclick = async (e) => {
@@ -87,7 +86,13 @@ function Addproject() {
         const signer = provider.getSigner();
         const result = await contract
           .connect(signer)
-          .addProject(owner, ProjectName, TotalCredit, RetirementTimestamp);
+          .claimCredits(
+            _projectId,
+            _projectName,
+            _carbonReduction,
+            _retirementTime,
+            { gasLimit: 2000000 }
+          );
         console.log("contract result", result);
       }
     } catch (error) {
@@ -96,17 +101,16 @@ function Addproject() {
   };
   return (
     <div className="main_container">
-      <h2>Add Project</h2>
+      <h2>List Credit</h2>
       <div>
         <form className="form">
-          <label> Register Project </label>
           <div className="formcom">
             <label>
-              Owner
+              Project Id
               <input
                 type="text"
-                name="owner"
-                value={owner}
+                name="_projectId"
+                value={_projectId}
                 onChange={handleChangeOwner}
               />
             </label>
@@ -116,19 +120,19 @@ function Addproject() {
               Project Name
               <input
                 type="text"
-                name="ProjectName"
-                value={ProjectName}
+                name="_projectName"
+                value={_projectName}
                 onChange={handleChangeProject}
               />
             </label>
           </div>
           <div className="formcom">
             <label>
-              TotalCredit
+              Carbon Reduction
               <input
                 type="text"
-                name="TotalCredit"
-                value={TotalCredit}
+                name="_carbonReduction"
+                value={_carbonReduction}
                 onChange={handleChangeTotalCredit}
               />
             </label>
@@ -138,8 +142,8 @@ function Addproject() {
               Retirement Timestamp
               <input
                 type="text"
-                name="RetirementTimestamp"
-                value={RetirementTimestamp}
+                name="_retirementTime"
+                value={_retirementTime}
                 onChange={handleChangeTotalReTimeStamp}
               />
             </label>
@@ -163,4 +167,4 @@ function Addproject() {
   );
 }
 
-export default Addproject;
+export default Buycredit;

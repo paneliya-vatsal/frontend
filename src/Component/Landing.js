@@ -1,7 +1,82 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Landing.css";
+import { getContract, getProvider, getSigner } from "./Connect";
+import SustainaToken from "A:/Project/Contract/frontend/src/ABI/SustainaToken.json";
 
 function Landing() {
+  const [provider, setProvider] = useState(null);
+  const [contract, setContract] = useState(null);
+  const [signer, setSigner] = useState(null);
+
+  useEffect(() => {
+    // Call the function to get the provider
+    const connectToProvider = async () => {
+      try {
+        const providerInstance = await getProvider();
+        setProvider(providerInstance);
+      } catch (error) {
+        console.error("Error connecting to provider:", error);
+      }
+    };
+
+    connectToProvider();
+  }, []);
+
+  useEffect(() => {
+    if (provider) {
+      // Call the function to get the signer
+      const connectToSigner = async () => {
+        try {
+          const signerInstance = await getSigner();
+          setSigner(signerInstance);
+        } catch (error) {
+          console.error("Error connecting to signer:", error);
+        }
+      };
+
+      connectToSigner();
+    }
+  }, [provider]);
+  useEffect(() => {
+    if (provider && signer) {
+      // Call the function to get the contract instance
+      const connectToContract = async () => {
+        try {
+          const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Replace with your contract address
+          // const abi = carbonCreditMarket; // Replace with your contract ABI
+          const contractInstance = await getContract(
+            contractAddress,
+            SustainaToken
+          );
+          setContract(contractInstance);
+          console.log("Contract connected:", contractInstance);
+        } catch (error) {
+          console.error("Error connecting to contract:", error);
+        }
+      };
+
+      connectToContract();
+    }
+  }, [provider, signer]);
+
+  let carbonTokenAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
+
+  const handleClick = async () => {
+    try {
+      if (contract && provider) {
+        const signer = provider.getSigner();
+        const tx = await contract
+          .connect(signer)
+          .transfer(carbonTokenAddress, 10000, {
+            gasLimit: 2000000,
+          });
+        console.log("transaction Sucessfull");
+      }
+    } catch (error) {
+      console.error("transaction unsucessfull", error);
+    }
+  };
+
   return (
     <div className="body">
       <div className="text">
@@ -15,8 +90,12 @@ function Landing() {
         <img src="./wind farm.png" alt="wind farm" className="windImg" />
       </div>
 
-      <div>
+      <div className="core">
         <h1>"Empowering Sustainable Future : Trade Carbon Cedit"</h1>
+        <button className="btn" onClick={handleClick}>
+          {" "}
+          Start{" "}
+        </button>
       </div>
     </div>
   );

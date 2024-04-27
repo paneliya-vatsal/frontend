@@ -1,94 +1,133 @@
 import React, { useState, useEffect } from "react";
-import { ethers } from "ethers";
+import { getContract, getProvider, getSigner } from "./Connect";
+import carbonCreditMarket from "A:/Project/Contract/frontend/src/ABI/CarbonCreditMarket.json";
 import "./Projects.css";
-import CarbonCreditMarket from "A:/Project/Contract/frontend/src/ABI/CarbonCreditMarket.json";
+import Buycredit from "./Buycredit";
+import { Link } from "react-router-dom";
 
 function Projects() {
   const [provider, setProvider] = useState(null);
-  const [account, setAccount] = useState(null);
   const [contract, setContract] = useState(null);
+  const [signer, setSigner] = useState(null);
 
   useEffect(() => {
-    if (typeof window.ethereum !== "undefined") {
-      const ethProvider = new ethers.providers.Web3Provider(window.ethereum);
-      setProvider(ethProvider);
-    } else {
-      console.log("metamask is not connected");
-    }
-  }, []);
-
-  useEffect(() => {
-    // Get the connected account
-    const fetchAccount = async () => {
-      if (provider) {
-        const accounts = await provider.listAccounts();
-        if (accounts.length > 0) {
-          setAccount(accounts[0]);
-        }
+    // Call the function to get the provider
+    const connectToProvider = async () => {
+      try {
+        const providerInstance = await getProvider();
+        setProvider(providerInstance);
+      } catch (error) {
+        console.error("Error connecting to provider:", error);
       }
     };
 
-    fetchAccount();
-  }, [provider]);
+    connectToProvider();
+  }, []);
 
   useEffect(() => {
-    // Instantiate the contract
     if (provider) {
-      const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
-      const contractABI = CarbonCreditMarket; // Your contract ABI
+      // Call the function to get the signer
+      const connectToSigner = async () => {
+        try {
+          const signerInstance = await getSigner();
+          setSigner(signerInstance);
+        } catch (error) {
+          console.error("Error connecting to signer:", error);
+        }
+      };
 
-      const contractInstance = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        provider
-      );
-      setContract(contractInstance);
+      connectToSigner();
     }
   }, [provider]);
+  useEffect(() => {
+    if (provider && signer) {
+      // Call the function to get the contract instance
+      const connectToContract = async () => {
+        try {
+          const contractAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"; // Replace with your contract address
+          //   const abi = carbonCreditMarket; // Replace with your contract ABI
+          const contractInstance = await getContract(
+            contractAddress,
+            carbonCreditMarket
+          );
+          setContract(contractInstance);
+          console.log("Contract connected");
+        } catch (error) {
+          console.error("Error connecting to contract:", error);
+        }
+      };
 
-  const [projectId, setProjectId] = useState();
+      connectToContract();
+    }
+  }, [provider, signer]);
 
-  const handleChangeProjectId = (event) => {
-    setProjectId(event.target.value);
+  const [projectIds, setProjectIds] = useState();
+  const [projectDetails, setProjectDetails] = useState([]);
+
+  const handleClick = async () => {
+    try {
+      const projectCount = await contract.connect(signer).getCounter();
+      console.log(parseInt(projectCount));
+      setProjectIds(parseInt(projectCount));
+    } catch (error) {
+      console.log("counter problem");
+    }
   };
 
-  const handleclick = async (e) => {
-    e.preventDefault();
+  const fetchAllProject = async () => {
     try {
-      if (contract && provider) {
-        const signer = provider.getSigner();
-        const result = await contract.connect(signer).getProjectData(projectId);
-        const [Owner, ProjectName, TotalCredit, RetirementTimestamp] = result;
-        console.log("Owner:", Owner);
-        console.log("Project Name:", ProjectName);
-        console.log("Total Credit:", TotalCredit);
-        console.log("RetirementTimestamp", RetirementTimestamp);
-      }
+      const signer = provider.getSigner();
+
+      const projectsData = await contract.connect(signer).fetchAllProjects();
+      const projectsArray = projectsData.map((project) => ({
+        owner: project[0],
+        projectName: project[1],
+        totalCredit: project[2],
+        retirementTimestamp: project[3],
+      }));
+      console.log(projectsArray);
+      setProjectDetails(projectsArray);
     } catch (error) {
-      console.error("Error calling contract function:", error);
+      console.error("Error fetching project details:", error);
     }
   };
 
   return (
-    <div className="min">
-      <h1>owner : </h1>
-      <h1>project name :</h1>
-      <h1>Total Credit :</h1>
-      <h1>Retirement Timestamp :</h1>
-
-      <input
-        type="text"
-        name="projectId"
-        value={projectId}
-        onChange={handleChangeProjectId}
-      ></input>
+    <div className="main">
       <div>
-        <button type="submit" onClick={handleclick}>
+        <button type="submit" onClick={fetchAllProject}>
           submit
         </button>
+        <button type="submit" onClick={handleClick}>
+          count
+        </button>
+
+        <div className="main2">
+          <h1>All Project Details</h1>
+          <div className="min3">
+            {projectDetails.map((project, index) => (
+              <div key={index} className="min2">
+                <h2>{project.projectName}</h2>
+                <div className="min">
+                  <p>Owner: {project.owner}</p>
+                  <p>Project Name: {project.projectName}</p>
+                  <p>Total Credit: {parseInt(project.totalCredit)}</p>
+                  <p>
+                    Retirement Timestamp:{" "}
+                    {parseInt(project.retirementTimestamp)}
+                  </p>
+                </div>
+                <li>
+                  <Link to="/Buycredit" className="btn">
+                    Buy Credit
+                  </Link>
+                </li>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
-
 export default Projects;

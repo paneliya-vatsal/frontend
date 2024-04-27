@@ -35,3 +35,9 @@
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-weight: 100;
 }
+
+.core{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
