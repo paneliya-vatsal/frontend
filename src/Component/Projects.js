@@ -98,9 +98,6 @@ function Projects() {
         <button type="submit" onClick={fetchAllProject}>
           submit
         </button>
-        <button type="submit" onClick={handleClick}>
-          count
-        </button>
 
         <div className="main2">
           <h1>All Project Details</h1>
@@ -119,7 +116,7 @@ function Projects() {
                 </div>
                 <li>
                   <Link to="/Buycredit" className="btn">
-                    Buy Credit
+                    List Credit
                   </Link>
                 </li>
               </div>

@@ -23,18 +23,12 @@ function Navbar() {
         <NavLink className="btn" to="/Project">
           Projects
         </NavLink>
-        <NavLink className="btn" to="/contact">
-          Contact
-        </NavLink>
         <NavLink className="btn" to="/Addproject">
           Add Project
         </NavLink>
         <button className="btn" onClick={connectWallet}>
           Connect Wallet
         </button>
-        <NavLink className="btn" to="/Login">
-          Login
-        </NavLink>
       </div>
     </div>
   );
