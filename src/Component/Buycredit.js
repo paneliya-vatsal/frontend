@@ -99,8 +99,25 @@ function Buycredit() {
       console.error("Error calling contract function:", error);
     }
   };
+
+  const HandleClick = async () => {
+    try {
+      if (contract && provider) {
+        const signer = provider.getSigner();
+        const tx = await contract
+          .connect(signer)
+          ._Transfer({ gasLimit: 2000000 });
+        console.log("transcation sucessfull", tx);
+      }
+    } catch (error) {
+      console.log("transaction faild", error);
+    }
+  };
   return (
     <div className="main_container">
+      <button className="btn" onClick={HandleClick}>
+        Transfer
+      </button>
       <h2>List Credit</h2>
       <div>
         <form className="form">

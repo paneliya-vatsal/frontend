@@ -59,21 +59,36 @@ function Landing() {
     }
   }, [provider, signer]);
 
-  let carbonTokenAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
-
+  let carbonTokenAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
   const handleClick = async () => {
     try {
       if (contract && provider) {
         const signer = provider.getSigner();
         const tx = await contract
           .connect(signer)
-          .transfer(carbonTokenAddress, 10000, {
+          .approve(carbonTokenAddress, 10000, {
             gasLimit: 2000000,
           });
-        console.log("transaction Sucessfull");
+        console.log("transaction Sucessfull", tx);
       }
     } catch (error) {
       console.error("transaction unsucessfull", error);
+    }
+  };
+
+  const HandleClick = async () => {
+    try {
+      if (contract && provider) {
+        const signer = provider.getSigner();
+        const tx = await contract
+          .connect(signer)
+          .tokenTransfer(carbonTokenAddress, 10000, {
+            gasLimit: 2000000,
+          });
+        console.log("transcation sucessfull", tx);
+      }
+    } catch (error) {
+      console.log("transaction faild", error);
     }
   };
 
@@ -94,7 +109,11 @@ function Landing() {
         <h1>"Empowering Sustainable Future : Trade Carbon Cedit"</h1>
         <button className="btn" onClick={handleClick}>
           {" "}
-          Start{" "}
+          approve{" "}
+        </button>
+        <button className="btn" onClick={HandleClick}>
+          {" "}
+          Transfer{" "}
         </button>
       </div>
     </div>
